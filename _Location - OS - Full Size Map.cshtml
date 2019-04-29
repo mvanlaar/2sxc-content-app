@@ -2,7 +2,13 @@
 
 @* put all necessary link/script tags here *@
 @RenderPage("_Shared - Assets.cshtml", new { parts = "styles,scripts"})
-<script type="text/javascript" src="@App.Path/dist/google-map.js" data-enableoptimizations="true"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+   crossorigin=""/>
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+   integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+   crossorigin=""></script>
 
 <div class="co-container-outer">
 	<div class="co-container-inner sc-element">
@@ -32,17 +38,16 @@
 
 <script type="text/javascript">
 	$(function(){
-		var image = "@((!String.IsNullOrEmpty(Presentation.MarkerImage)) ? Presentation.MarkerImage : "")";
-		$("#GoogleMap-@(Dnn.Module.ModuleID)").toGoogleMap({
-			position: {
-				lat: @Content.GPSLat.ToString().Replace(',', '.'),
-				lng: @Content.GPSLng.ToString().Replace(',', '.')
-			},
-			zoom: @Presentation.Zoom,
-			mapTypeId: "ROADMAP",
-			infoWindowHtml: $("#GoogleMap-Content-@Dnn.Module.ModuleID").html(),
-			showInfoWindow: true,
-			image: image
-		});
+		var map = new L.Map('Openstreetmap-@(Dnn.Module.ModuleID)');
+		var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+		var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+		var osm = new L.TileLayer(osmUrl, {minZoom: 8, maxZoom: 18, attribution: osmAttrib});		
+
+		// start the map in South-East England
+		map.setView(new L.LatLng(@Content.GPSLat.ToString().Replace(',', '.'), @Content.GPSLng.ToString().Replace(',', '.')),@Presentation.Zoom);
+		map.addLayer(osm);
+		
+		var marker = L.marker([@Content.GPSLat.ToString().Replace(',', '.'), @Content.GPSLng.ToString().Replace(',', '.')]).addTo(mymap);
+				
 	});
 </script>

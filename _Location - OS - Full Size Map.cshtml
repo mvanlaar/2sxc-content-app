@@ -13,7 +13,7 @@
 <div class="co-container-outer">
 	<div class="co-container-inner sc-element">
 		@Edit.Toolbar(Content)
-		<div @Koi.Class("all='sc-element co-google-map-container' bs3='embed-responsive embed-responsive-16by9' bs4,oth='embed-responsive embed-responsive-16by9'")>
+		<div @Koi.Class("all='sc-element co-openstreetmap-map-container' bs3='embed-responsive embed-responsive-16by9' bs4,oth='embed-responsive embed-responsive-16by9'")>
 			<div @Koi.Class("all='co-openstreetmap-map' bs3='embed-responsive-item' bs4,oth='embed-responsive-item'") id="Openstreetmap-@Dnn.Module.ModuleID">
 			</div>
 			<div class="co-openstreetmap-map-content" id="Openstreetmap-Content-@Dnn.Module.ModuleID" style="display:none;">
@@ -21,14 +21,7 @@
 					<strong>@Content.Company</strong>
 					<div>
 						@Html.Raw(Content.Description)
-					</div>
-					@{
-						var directionurl = "https://maps.google.com/maps?daddr="+Content.Street.Replace(" ", "+")+"+"+Content.ZipCode.Replace(" ", "+")+"+"+Content.City.Replace(" ", "+")+"+"+Content.Country.Replace(" ", "+")+"&amp;saddr=&amp;f=d&amp;hl=de&amp;ie=UTF8&amp;z=16";
-						if (Convert.ToInt32(Content.GPSLng) > 0){
-							directionurl = "https://www.google.com/maps/dir//"+Content.GPSLat.ToString().Replace(',', '.')+","+Content.GPSLng.ToString().Replace(',', '.');
-						}
-					}
-					<a target="_blank" href="@directionurl">@Content.LabelDirections</a>
+					</div>					
 				</div>
 			</div>
 		</div>
